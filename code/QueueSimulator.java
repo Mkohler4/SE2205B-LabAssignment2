@@ -32,7 +32,6 @@ public class QueueSimulator{
   public double calcAverageWaitingTime(){
       double size = eventQueue.size();
       double time = 0;
-      System.out.print(size);
       while(!eventQueue.isEmpty())
       {
           Data values = new Data();
@@ -43,14 +42,14 @@ public class QueueSimulator{
   }
   
   public double runSimulation(){
-      while(currTime < totalSimTime)
+      for(double i = 0; i<totalSimTime;)
       {
           if(timeForNextArrival < timeForNextDeparture || buffer.isEmpty())
           {
               Data data = new Data();
               data.setArrivalTime(timeForNextArrival);
               buffer.enqueue(data);
-              currTime += timeForNextArrival;
+              i += timeForNextArrival;
               timeForNextArrival  = timeForNextArrival + getRandTime(arrivalRate);
           }
           else
@@ -58,7 +57,7 @@ public class QueueSimulator{
             Data data = buffer.dequeue();
             data.setDepartureTime(timeForNextDeparture);
             eventQueue.enqueue(data);
-            currTime = timeForNextDeparture;
+            i = timeForNextDeparture;
             if(buffer.isEmpty())
             {
                 timeForNextDeparture = timeForNextArrival + serviceTime;
